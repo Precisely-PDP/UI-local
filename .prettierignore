@@ -1,0 +1,10 @@
+node_modules
+.angular
+.editorconfig
+angular.json
+package.json
+package-lock.json
+README.md
+tsconfig.app.json
+tsconfig.json
+tsconfig.spec.json
