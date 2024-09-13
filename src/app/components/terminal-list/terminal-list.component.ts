@@ -1,7 +1,5 @@
-import {Component, effect, inject, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ITerminalInit} from '../../Interfaces/ITerminalInit';
-import {LoadingService} from '../../services/signals/loading.service';
-import { environment } from 'src/environments/environment';
 import { NpmCommands } from 'src/app/enums/NpmCommands.enum';
 import { getRepoPath } from 'src/app/helpers/getRepoPath';
 
@@ -11,13 +9,6 @@ import { getRepoPath } from 'src/app/helpers/getRepoPath';
   styleUrl: './terminal-list.component.scss'
 })
 export class TerminalListComponent implements OnInit {
-  readonly colors = environment.loadingColors;
-  colorIndex = 0;
-  loadingService = inject(LoadingService);
-
-  loadingEffect = effect(() => {
-    this.colorIndex = this.loadingService.terminalNumber();
-  });
 
   terminals: ITerminalInit[] = [
     {
@@ -59,6 +50,5 @@ export class TerminalListComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    // this.loadingService.setNumberOfTerminals(this.terminals.length);
   }
 }

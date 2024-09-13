@@ -15,7 +15,6 @@ const io = require('socket.io')(http, {
 const terminals = new Map();
 
 io.on('connection', socket => {
-  console.log(`shell:${shell}`);
   socket.on('addTerminal', init => {
     console.log(`addingTerminal ${init.id}`);
     terminals.set(
@@ -28,7 +27,6 @@ io.on('connection', socket => {
         env: process.env
       })
     );
-    socket.emit('addedTerminal');
     terminals.get(init.id).onData(data => {
       socket.emit('getServerRespond', {termData: data, id: init.id});
     });

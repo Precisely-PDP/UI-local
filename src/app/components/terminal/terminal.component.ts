@@ -17,7 +17,6 @@ import {defTheme} from '../../shared/Themes';
 import {SpecialKey} from '../../enums/SpecialKey.enum';
 import {CaretService} from '../../services/caret.service';
 import {MultiCommandService} from '../../services/signals/multi-command.service';
-import {LoadingService} from '../../services/signals/loading.service';
 
 @Component({
   selector: 'ui-terminal',
@@ -50,7 +49,6 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
   autocomplete = false;
 
   //services
-  loadingService = inject(LoadingService);
   terminalService = inject(TerminalService);
   caretService = inject(CaretService);
   multiCommandService = inject(MultiCommandService);
@@ -89,11 +87,7 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
       })
     );
 
-    this.subs.add(
-      this.terminalService.$addedTerminal.subscribe(() => {
-        this.loadingService.increaseLoadedTerminals();
-      })
-    );
+    
   }
 
   ngOnInit(): void {
@@ -149,7 +143,6 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
       const ctrlKey = input.domEvent.ctrlKey;
       const altKey = input.domEvent.altKey;
       const caretX = this.getCaretX();
-      console.log(ctrlKey);
       switch (true) {
         case ctrlKey:
           switch (key) {
