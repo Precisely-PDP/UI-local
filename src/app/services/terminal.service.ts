@@ -10,6 +10,8 @@ import {ITerminalInit} from '../Interfaces/ITerminalInit';
 export class TerminalService {
   $getResponse = this.socket.fromEvent<ITerminalResponse>('getServerRespond');
 
+  $addedTerminal = this.socket.fromEvent('addedTerminal');
+
   constructor(private socket: Socket) {}
 
   addTerminal(init: ITerminalInit) {

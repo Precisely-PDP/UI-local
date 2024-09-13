@@ -1,6 +1,9 @@
 import {Component, effect, inject, OnInit} from '@angular/core';
 import {ITerminalInit} from '../../Interfaces/ITerminalInit';
 import {LoadingService} from '../../services/signals/loading.service';
+import { environment } from 'src/environments/environment';
+import { NpmCommands } from 'src/app/enums/NpmCommands.enum';
+import { getRepoPath } from 'src/app/helpers/getRepoPath';
 
 @Component({
   selector: 'ui-terminal-list',
@@ -8,76 +11,54 @@ import {LoadingService} from '../../services/signals/loading.service';
   styleUrl: './terminal-list.component.scss'
 })
 export class TerminalListComponent implements OnInit {
-  private readonly npmStart = 'npm run start';
-  private readonly npmServe = 'npm run serve';
-  readonly colors = [
-    '#eee9f6',
-    '#e3dbf0',
-    '#d8ccea',
-    '#cdbee5',
-    '#c2afdf',
-    '#b6a1d9',
-    '#ab92d3',
-    '#ab92d3',
-    '#a084cd',
-    '#9575c7',
-    '#8a67c1',
-    '#7f58bb',
-    '#734ab5',
-    '#6a44a7',
-    '#613e98',
-    '#58388a',
-    '#4f327b',
-    '#452c6d',
-    '#3c265e'
-  ];
+  readonly colors = environment.loadingColors;
   colorIndex = 0;
   loadingService = inject(LoadingService);
 
   loadingEffect = effect(() => {
-    this.colorIndex = (this.loadingService.timePassed() / 6) % 19;
+    this.colorIndex = this.loadingService.terminalNumber();
   });
 
   terminals: ITerminalInit[] = [
     {
       id: '0',
-      cwd: 'C:\\ReposGitlab\\core\\communicate-ui-orchestrator',
+      cwd: getRepoPath('core', 'communicate-ui-orchestrator'),
       name: 'Orchestrator',
-      commands: [this.npmStart]
+      commands: [NpmCommands.START]
     },
     {
       id: '1',
-      cwd: 'C:\\ReposGitlab\\core\\communicate-ui-header',
+      cwd: getRepoPath('core', 'communicate-ui-header'),
       name: 'Header',
-      commands: [this.npmServe]
+      commands: [NpmCommands.SERVE]
     },
     {
       id: '2',
-      cwd: 'C:\\ReposGitlab\\core\\communicate-ui-core',
+      cwd: getRepoPath('core', 'communicate-ui-core'),
       name: 'Core',
-      commands: [this.npmServe]
+      commands: [NpmCommands.SERVE]
     },
     {
       id: '3',
-      cwd: 'C:\\ReposGitlab\\video\\video-channel-ui',
+      cwd: getRepoPath('video', 'video-channel-ui'),
       name: 'Video',
-      commands: [this.npmServe]
+      commands: [NpmCommands.SERVE]
     },
     {
       id: '4',
-      cwd: 'C:\\ReposGitlab\\chat\\converse-ui',
+      cwd: getRepoPath('chat', 'converse-ui'),
       name: 'Chat',
-      commands: [this.npmServe]
+      commands: [NpmCommands.SERVE]
     },
     {
       id: '5',
-      cwd: 'C:\\ReposGitlab\\block-designer\\communicate-block-designer',
+      cwd: getRepoPath('block-designer', 'communicate-block-designer'),
       name: 'Block Designer',
-      commands: [this.npmServe]
+      commands: [NpmCommands.SERVE]
     }
   ];
 
   ngOnInit(): void {
-    this.loadingService.setNumberOfTerminals(this.terminals.length);
+    // this.loadingService.setNumberOfTerminals(this.terminals.length);
   }
 }

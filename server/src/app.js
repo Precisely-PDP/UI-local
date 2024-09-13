@@ -7,7 +7,7 @@ const app = require('express')();
 const http = require('http').Server(app);
 const io = require('socket.io')(http, {
   cors: {
-    origin: 'http://localhost:4200',
+    origin: ['http://localhost:4200', 'http://127.0.0.1:4200'],
     methods: ['GET', 'POST', 'PUT', 'DELETE']
   }
 });
@@ -15,6 +15,7 @@ const io = require('socket.io')(http, {
 const terminals = new Map();
 
 io.on('connection', socket => {
+  console.log(`shell:${shell}`);
   socket.on('addTerminal', init => {
     console.log(`addingTerminal ${init.id}`);
     terminals.set(
@@ -27,7 +28,7 @@ io.on('connection', socket => {
         env: process.env
       })
     );
-
+    socket.emit('addedTerminal');
     terminals.get(init.id).onData(data => {
       socket.emit('getServerRespond', {termData: data, id: init.id});
     });

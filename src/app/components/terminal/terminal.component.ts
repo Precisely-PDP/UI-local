@@ -55,7 +55,7 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
   caretService = inject(CaretService);
   multiCommandService = inject(MultiCommandService);
 
-  private sub: Subscription = new Subscription();
+  private subs: Subscription = new Subscription();
 
   clearMultiCommand = computed(() => {
     if (this.multiCommandService.command().count === 6) {
@@ -76,12 +76,8 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit(): void {
     this.initTerminal();
 
-    this.sub.add(
+    this.subs.add(
       this.terminalService.$getResponse.subscribe(response => {
-        if (!this.loadingService.loading()) {
-          this.loadingService.loadingTime();
-        }
-
         if (response.id === this.id()) {
           const resp = response.termData.replace(`\x1B[?5h\x1B[?5l`, '');
           this.write(resp);
@@ -92,6 +88,12 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       })
     );
+
+    this.subs.add(
+      this.terminalService.$addedTerminal.subscribe(() => {
+        this.loadingService.increaseLoadedTerminals();
+      })
+    );
   }
 
   ngOnInit(): void {
@@ -99,7 +101,7 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   ngOnDestroy(): void {
     this.deleteTerminal();
-    this.sub.unsubscribe();
+    this.subs.unsubscribe();
   }
 
   deleteTerminal(): void {
