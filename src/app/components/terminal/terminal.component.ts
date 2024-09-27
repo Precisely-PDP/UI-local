@@ -17,6 +17,9 @@ import {defTheme} from '../../shared/Themes';
 import {SpecialKey} from '../../enums/SpecialKey.enum';
 import {CaretService} from '../../services/caret.service';
 import {MultiCommandService} from '../../services/signals/multi-command.service';
+import { getTerminals } from 'src/app/helpers/getTerminals';
+import {isWindows, newLine} from '../../helpers/os-detector';
+import { AnsiDecoderService } from 'src/app/services/ansi-decoder.service';
 
 @Component({
   selector: 'ui-terminal',
@@ -45,6 +48,7 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
   terminal: Terminal;
   terminalElement: HTMLElement;
   command = '';
+  previousCommand = '';
   autocompletion = '';
   autocomplete = false;
 
@@ -52,11 +56,12 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
   terminalService = inject(TerminalService);
   caretService = inject(CaretService);
   multiCommandService = inject(MultiCommandService);
+  ansiDecoderService = inject(AnsiDecoderService);
 
   private subs: Subscription = new Subscription();
 
   clearMultiCommand = computed(() => {
-    if (this.multiCommandService.command().count === 6) {
+    if (this.multiCommandService.command().count === getTerminals().length) {
       this.multiCommandService.clearCommand();
     }
   });
@@ -74,10 +79,48 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit(): void {
     this.initTerminal();
 
+    //maybe better chat
+//     let outputBuffer = '';
+// const startMarker = `__CMD_START__${this.id()}__`;
+// const endMarker = `__CMD_END__${this.id()}__`;
+// let isCapturing = false;
+
+// this.subs.add(
+//   this.terminalService.$getResponse.subscribe(response => {
+//     if (response.id === this.id()) {
+//       let resp = this.ansiDecoderService.decodeAnsi(response.termData);
+//       outputBuffer += resp;
+
+//       if (outputBuffer.includes(startMarker)) {
+//         isCapturing = true;
+//         outputBuffer = outputBuffer.substring(outputBuffer.indexOf(startMarker) + startMarker.length);
+//       }
+
+//       if (isCapturing && outputBuffer.includes(endMarker)) {
+//         const commandOutput = outputBuffer.substring(0, outputBuffer.indexOf(endMarker));
+
+//         // Write the output to the terminal
+//         this.write(commandOutput);
+
+//         // Reset the buffer for the next command
+//         outputBuffer = outputBuffer.substring(outputBuffer.indexOf(endMarker) + endMarker.length);
+//         isCapturing = false;
+//       }
+//     }
+//   })
+// );
+
+
     this.subs.add(
       this.terminalService.$getResponse.subscribe(response => {
         if (response.id === this.id()) {
-          const resp = response.termData.replace(`\x1B[?5h\x1B[?5l`, '');
+          const resp = this.ansiDecoderService.decodeAnsi(response.termData)
+          // const resp = response.termData;
+          console.log(resp);
+          console.log('-----------------------------------------------');
+          if (resp === this.previousCommand) {
+            return;
+          }
           this.write(resp);
 
           if (this.autocomplete) {
@@ -86,8 +129,6 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       })
     );
-
-    
   }
 
   ngOnInit(): void {
@@ -113,13 +154,13 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.IOTerminal();
 
-    //this.loadingService.increaseNumberOfTerminals();
     this.terminalService.addTerminal({
       id: this.id(),
       cwd: this.initCwd(),
       cols: this.terminal.cols,
       rows: this.terminal.rows
     });
+
 
     // its working :)
     // this.initCommands.forEach(command => {
@@ -286,6 +327,8 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
     this.addToArray(this.autocomplete ? this.autocompletion : this.command);
     this.autocomplete = false;
     this.autocompletion = '';
+    this.specialCommands();
+    this.previousCommand = this.command;
     this.command = '';
   }
 
@@ -303,7 +346,7 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   clearLine(): void {
     this.write(this.caretService.eraseAll());
-    this.write('\r$ ');
+    this.write(isWindows() ? '\r$ ' : '\r $ ');
   }
 
   modifyCommand(start: number, end: number, moveTo: number, input = ''): void {
@@ -336,5 +379,16 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
     this.usedCommands.reverse();
 
     this.usedCommandsId = this.usedCommands.indexOf(command);
+  }
+
+  specialCommands(): void {
+    switch(this.command.toLowerCase()) {
+      case 'clear':
+        console.log('terminalCLear')
+        this.terminal.write('\x1B[2J\x1B[H');
+        break;
+      default:
+        break;
+    }
   }
 }

@@ -1,1 +1,0 @@
-export const getPathSeparator = (): string => window.navigator.userAgent.includes('Win')? '\\' : '/';

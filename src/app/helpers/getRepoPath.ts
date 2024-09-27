@@ -1,5 +1,5 @@
 import { environment } from "src/environments/environment";
-import { getPathSeparator } from "./getPathSeparator";
+import { getPathSeparator } from "./os-detector";
 
 export const getRepoPath = (folder: string, repoName: string): string => {
     const sep = getPathSeparator();
