@@ -7,7 +7,7 @@ const app = require('express')();
 const http = require('http').Server(app);
 const io = require('socket.io')(http, {
   cors: {
-    origin: ['http://localhost:4200', 'http://127.0.0.1:4200'],
+    origin: ['http://ui-local:4567', 'http://127.0.0.1:4567'],
     methods: ['GET', 'POST', 'PUT', 'DELETE']
   }
 });
@@ -47,11 +47,33 @@ io.on('connection', socket => {
         env: process.env
       })
     );
-    terminals.get(init.id).onData(data => {
-      console.log(`${prefixes.ON_DATA}: ${JSON.stringify(data, null, 2)}`)
-      socket.emit('getServerRespond', {termData: data, id: init.id});
-    });
+    // terminals.get(init.id).onData(data => {
+    //   console.log(`${prefixes.ON_DATA}: ${JSON.stringify(data, null, 2)}`)
+    //   socket.emit('getServerRespond', {termData: data, id: init.id});
+    // });
 
+    let dataBuffer = '';
+    let inactivityTimeout;
+    const inactivityDelay = 300;
+    terminals.get(init.id).onData(data => {
+      console.log(`${prefixes.ON_DATA}: ${JSON.stringify(data, null, 2)}`);
+      // Append incoming data to the buffer
+      dataBuffer += data;
+
+      // Reset the inactivity timer
+      if (inactivityTimeout) {
+        clearTimeout(inactivityTimeout);
+      }
+      inactivityTimeout = setTimeout(() => {
+        // No data received for inactivityDelay milliseconds
+        // Process the buffered data
+        socket.emit('getServerRespond', {termData: dataBuffer, id: init.id});
+
+        // Clear the data buffer for the next command
+        dataBuffer = '';
+      }, inactivityDelay);
+
+    });
     terminals.get(init.id).onExit(({ exitCode, signal }) => {
       console.log(`${prefixes.ON_EXIT}: Terminal ${init.id} exited with code ${exitCode} and signal ${signal}`);
       terminals.delete(init.id);
@@ -81,15 +103,15 @@ io.on('connection', socket => {
     // const uuid = uuidv4();
     // const startMarker = `__CMD_START__${uuid}__`;
     // const endMarker = `__CMD_END__${uuid}__`;
-    
-    const startMarker = `__CMD_START__${terminalId}__`;
-    const endMarker = `__CMD_END__${terminalId}__`;
-    
+
+    // const startMarker = `__CMD_START__${terminalId}__`;
+    // const endMarker = `__CMD_END__${terminalId}__`;
+
     const ptyProcess = terminals.get(terminalId);
 
-    //ptyProcess.write(`${startMarker}`);
+    // ptyProcess.write(`${startMarker}`);
     ptyProcess.write(`${command}${newLine()}`);
-    //ptyProcess.write(`${endMarker}`);
+    // ptyProcess.write(`${endMarker}`);
   }
 
   socket.on('sendCommand', command => {

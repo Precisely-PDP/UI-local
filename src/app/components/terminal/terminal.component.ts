@@ -48,9 +48,9 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
   terminal: Terminal;
   terminalElement: HTMLElement;
   command = '';
-  previousCommand = '';
   autocompletion = '';
   autocomplete = false;
+  isLoading = true;
 
   //services
   terminalService = inject(TerminalService);
@@ -110,17 +110,13 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
 //   })
 // );
 
-
     this.subs.add(
       this.terminalService.$getResponse.subscribe(response => {
         if (response.id === this.id()) {
-          const resp = this.ansiDecoderService.decodeAnsi(response.termData)
-          // const resp = response.termData;
-          console.log(resp);
-          console.log('-----------------------------------------------');
-          if (resp === this.previousCommand) {
-            return;
-          }
+          const resp = this.ansiDecoderService.decodeAnsi(response.termData);
+          console.log(`RESP: ${resp}`);
+          console.log('-------------------------------------------------');
+          this.isLoading = false;
           this.write(resp);
 
           if (this.autocomplete) {
@@ -328,7 +324,6 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
     this.autocomplete = false;
     this.autocompletion = '';
     this.specialCommands();
-    this.previousCommand = this.command;
     this.command = '';
   }
 

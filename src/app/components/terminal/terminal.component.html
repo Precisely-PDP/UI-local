@@ -1,6 +1,7 @@
 <div
   id="{{ id() }}"
-  class="group">
+  class="group"
+  [class.opacity-0]="isLoading">
   <div class="rounded-t-2xl bg-green-500 group-focus-within:bg-indigo-500">
     <p
       class="text-center text-amber-50"
