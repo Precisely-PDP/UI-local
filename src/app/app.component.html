@@ -1,5 +1,31 @@
-<nav>
-  <a routerLink="/">Config</a>
-  <a routerLink="/terminals">Terminals</a>
-</nav>
-<router-outlet></router-outlet>
+<div class="flex">
+  <nav [ngClass]="{'w-20': isSidebarMinimized, 'w-60': !isSidebarMinimized}"
+       class="fixed top-0 left-0 h-screen bg-gray-800 text-white transition-all duration-300 p-4 z-10">
+
+    <button (click)="toggleSidebar()"
+            class="text-white bg-gray-700 px-2 py-1 rounded mb-4 w-full hover:bg-gray-600">
+      {{ isSidebarMinimized ? '☰' : 'Minimize' }}
+    </button>
+
+    <a routerLink="/config"
+       routerLinkActive="active-tab"
+       class="block py-2 px-2 rounded hover:bg-gray-700"
+       [ngClass]="{'text-center': isSidebarMinimized, 'text-left': !isSidebarMinimized}">
+      <span *ngIf="isSidebarMinimized">⚙️</span>
+      <span *ngIf="!isSidebarMinimized">Configuration</span>
+    </a>
+
+    <a routerLink="/terminals"
+       routerLinkActive="active-tab"
+       class="block py-2 px-2 rounded hover:bg-gray-700"
+       [ngClass]="{'text-center': isSidebarMinimized, 'text-left': !isSidebarMinimized}">
+      <span *ngIf="isSidebarMinimized">💻</span>
+      <span *ngIf="!isSidebarMinimized">Terminals</span>
+    </a>
+  </nav>
+
+  <main [ngClass]="{'ml-24': isSidebarMinimized, 'ml-64': !isSidebarMinimized}"
+        class="flex-1 pt-6 ml-64 overflow-y-auto h-screen transition-all duration-300">
+    <router-outlet></router-outlet>
+  </main>
+</div>
