@@ -20,6 +20,7 @@ import {MultiCommandService} from '../../services/signals/multi-command.service'
 import { getTerminals } from 'src/app/helpers/getTerminals';
 import {isWindows, newLine} from '../../helpers/os-detector';
 import { AnsiDecoderService } from 'src/app/services/ansi-decoder.service';
+import {LoadingService} from '../../services/signals/loading.service';
 
 @Component({
   selector: 'ui-terminal',
@@ -50,13 +51,14 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
   command = '';
   autocompletion = '';
   autocomplete = false;
-  isLoading = true;
+  isLoaded = false;
 
   //services
   terminalService = inject(TerminalService);
   caretService = inject(CaretService);
   multiCommandService = inject(MultiCommandService);
   ansiDecoderService = inject(AnsiDecoderService);
+  loadingService = inject(LoadingService);
 
   private subs: Subscription = new Subscription();
 
@@ -114,13 +116,15 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
       this.terminalService.$getResponse.subscribe(response => {
         if (response.id === this.id()) {
           const resp = this.ansiDecoderService.decodeAnsi(response.termData);
-          console.log(`RESP: ${resp}`);
-          console.log('-------------------------------------------------');
-          this.isLoading = false;
           this.write(resp);
 
           if (this.autocomplete) {
             this.autocompletion += resp;
+          }
+
+          if (!this.isLoaded) {
+            this.isLoaded = true;
+            this.loadingService.increaseLoadedTerminals();
           }
         }
       })
