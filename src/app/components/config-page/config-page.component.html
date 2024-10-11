@@ -1,1 +1,61 @@
-<p>config-page works!</p>
+<div class="max-w-xl mx-auto p-6 bg-gray-100 rounded-lg shadow-lg">
+  <h2 class="text-2xl font-bold mb-4">Configuration Page</h2>
+
+  <form [formGroup]="configForm" class="space-y-6">
+    <div>
+      <label for="projects" class="block text-lg font-medium text-gray-700">Select Projects</label>
+      <select id="projects" formControlName="selectedProjects" multiple
+              size="7"
+      class="w-full mt-2 p-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 overflow-y-auto">
+      <option *ngFor="let project of projects" [value]="project">{{ project }}</option>
+      </select>
+    </div>
+
+    <div class="flex items-center">
+      <input type="checkbox" id="allOption" formControlName="addAll"
+             class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring focus:ring-opacity-50">
+      <label for="allOption" class="ml-2 block text-lg font-medium text-gray-700">
+        Add All projects
+      </label>
+    </div>
+
+    <div class="flex items-center">
+      <input type="checkbox" id="coreOption" formControlName="addCore"
+             class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring focus:ring-opacity-50">
+      <label for="coreOption" class="ml-2 block text-lg font-medium text-gray-700">
+        Add Predefined Projects ({{ coreOption.join(', ') }})
+      </label>
+    </div>
+
+    <div class="flex items-center">
+      <input type="checkbox" id="chatOption" formControlName="addChat"
+             class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring focus:ring-opacity-50">
+      <label for="chatOption" class="ml-2 block text-lg font-medium text-gray-700">
+        Add Combo One ({{ chatOption.join(', ') }})
+      </label>
+    </div>
+
+    <div class="flex items-center">
+      <input type="checkbox" id="videoOption" formControlName="addVideo"
+             class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring focus:ring-opacity-50">
+      <label for="videoOption" class="ml-2 block text-lg font-medium text-gray-700">
+        Add Combo Two ({{ videoOption.join(', ') }})
+      </label>
+    </div>
+
+    <div class="flex items-center">
+      <input type="checkbox" id="documentOption" formControlName="addDocument"
+             class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring focus:ring-opacity-50">
+      <label for="documentOption" class="ml-2 block text-lg font-medium text-gray-700">
+        Add Combo Two ({{ documentOption.join(', ') }})
+      </label>
+    </div>
+
+    <div>
+      <h3 class="text-lg font-semibold">Selected Projects:</h3>
+      <ul class="list-disc pl-6 mt-2">
+        <li *ngFor="let selected of configForm.get('selectedProjects')?.value">{{ selected }}</li>
+      </ul>
+    </div>
+  </form>
+</div>

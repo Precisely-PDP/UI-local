@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {SocketIoModule, SocketIoConfig} from 'ngx-socket-io';
 
 import {AppComponent} from './app.component';
@@ -29,7 +29,8 @@ const config: SocketIoConfig = {url: 'http://localhost:4444', options: {}};
     SocketIoModule.forRoot(config),
     NgTerminalModule,
     RouterOutlet,
-    RouterLink
+    RouterLink,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

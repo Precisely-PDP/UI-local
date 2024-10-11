@@ -1,9 +1,9 @@
 <div class="flex">
   <nav [ngClass]="{'w-20': isSidebarMinimized, 'w-60': !isSidebarMinimized}"
-       class="fixed top-0 left-0 h-screen bg-gray-800 text-white transition-all duration-300 p-4 z-10">
+       class="fixed top-0 left-0 h-screen bg-gray-800 text-white transition-all duration-300 p-4 z-10 space-y-2">
 
     <button (click)="toggleSidebar()"
-            class="text-white bg-gray-700 px-2 py-1 rounded mb-4 w-full hover:bg-gray-600">
+            class="text-white bg-gray-700 px-2 py-1 rounded w-full hover:bg-gray-600">
       {{ isSidebarMinimized ? '☰' : 'Minimize' }}
     </button>
 
