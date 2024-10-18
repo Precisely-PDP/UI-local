@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {getTerminals} from '../../helpers/getTerminals';
-import {ChannelsName} from '../../enums/channelsName.enum';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { getTerminals } from '../../helpers/getTerminals';
+import { ChannelsName } from '../../enums/channelsName.enum';
+import { ActiveTerminalsService } from '../../signals/activeTerminals.service';
 
 @Component({
   selector: 'ui-config-page',
@@ -10,15 +11,21 @@ import {ChannelsName} from '../../enums/channelsName.enum';
 })
 export class ConfigPageComponent {
   configForm: FormGroup;
-  projects = getTerminals().map(terminal => terminal.name);
+  projectsPool = getTerminals().map(terminal => terminal.name);
   coreOption = [ChannelsName.ORCHESTRATOR, ChannelsName.HEADER, ChannelsName.CORE];
   chatOption = [...this.coreOption, ChannelsName.CHAT];
   videoOption = [...this.coreOption, ChannelsName.VIDEO, ChannelsName.BLOCK_DESIGNER];
   documentOption = [...this.coreOption, ChannelsName.DOCUMENT, ChannelsName.BLOCK_DESIGNER];
 
+  //services
+  activeTerminals = inject(ActiveTerminalsService);
+
   constructor(private fb: FormBuilder) {
+    const selectedProjects = this.activeTerminals.activeTerminals().map(terminal => terminal.name);
+
+    // Initialize the form with selectedProjects and checkbox states
     this.configForm = this.fb.group({
-      selectedProjects: [[]],
+      selectedProjects: [selectedProjects],
       addCore: [false],
       addChat: [false],
       addVideo: [false],
@@ -28,6 +35,10 @@ export class ConfigPageComponent {
   }
 
   ngOnInit(): void {
+    // Update checkboxes based on selectedProjects when the component loads
+    this.updateCheckboxes();
+
+    // Subscribe to value changes of checkboxes
     this.configForm.get('addCore')?.valueChanges.subscribe((checked) => {
       if (checked) {
         this.addProjects(this.coreOption);
@@ -59,12 +70,18 @@ export class ConfigPageComponent {
         this.removeProjects(this.documentOption);
       }
     });
+
     this.configForm.get('addAll')?.valueChanges.subscribe((checked) => {
       if (checked) {
-        this.addProjects(this.projects);
+        this.addProjects(this.projectsPool);
       } else {
-        this.removeProjects(this.projects);
+        this.removeProjects(this.projectsPool);
       }
+    });
+
+    // Subscribe to selectedProjects changes to update checkboxes
+    this.configForm.get('selectedProjects')?.valueChanges.subscribe(() => {
+      this.updateCheckboxes();
     });
   }
 
@@ -72,11 +89,26 @@ export class ConfigPageComponent {
     const selected = this.configForm.get('selectedProjects')?.value || [];
     const newSelection = [...new Set([...selected, ...projectsToAdd])];  // Ensure no duplicates
     this.configForm.get('selectedProjects')?.setValue(newSelection);
+    this.activeTerminals.setTerminals(newSelection);
   }
 
   removeProjects(projectsToRemove: string[]) {
     const selected = this.configForm.get('selectedProjects')?.value || [];
     const newSelection = selected.filter((project: string) => !projectsToRemove.includes(project));
     this.configForm.get('selectedProjects')?.setValue(newSelection);
+    this.activeTerminals.setTerminals(newSelection);
+  }
+
+  updateCheckboxes() {
+    const selected = this.configForm.get('selectedProjects')?.value || [];
+
+    const containsAll = (arr: string[]) => arr.every(v => selected.includes(v));
+
+    // Update checkboxes without emitting events to avoid infinite loops
+    this.configForm.get('addCore')?.setValue(containsAll(this.coreOption), { emitEvent: false });
+    this.configForm.get('addChat')?.setValue(containsAll(this.chatOption), { emitEvent: false });
+    this.configForm.get('addVideo')?.setValue(containsAll(this.videoOption), { emitEvent: false });
+    this.configForm.get('addDocument')?.setValue(containsAll(this.documentOption), { emitEvent: false });
+    this.configForm.get('addAll')?.setValue(containsAll(this.projectsPool), { emitEvent: false });
   }
 }

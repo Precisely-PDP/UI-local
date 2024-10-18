@@ -43,7 +43,7 @@ export const getTerminals = (): ITerminalInit[] => {
           },
           {
             id: '6',
-            cwd: getRepoPath('document-designer', 'communication-document-designer'),
+            cwd: getRepoPath('document-designer', 'communicate-document-designer'),
             name: ChannelsName.DOCUMENT,
             commands: [NpmCommands.SERVE]
           }
