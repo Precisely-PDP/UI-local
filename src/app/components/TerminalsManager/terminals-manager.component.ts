@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core';
-import {MultiCommandService} from '../../services/signals/multi-command.service';
+import {MultiCommandService} from '../../signals/multi-command.service';
 
 @Component({
   selector: 'ui-terminals-manager',

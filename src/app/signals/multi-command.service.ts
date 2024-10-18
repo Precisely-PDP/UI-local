@@ -1,5 +1,5 @@
 import {Injectable, signal} from '@angular/core';
-import {ISignalCommand} from '../../Interfaces/ISignalCommand';
+import {ISignalCommand} from '../Interfaces/ISignalCommand';
 
 @Injectable({
   providedIn: 'root'

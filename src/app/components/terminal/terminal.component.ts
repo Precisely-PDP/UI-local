@@ -16,11 +16,11 @@ import {defaultOptions} from '../../shared/TerminalOptions';
 import {defTheme} from '../../shared/Themes';
 import {SpecialKey} from '../../enums/SpecialKey.enum';
 import {CaretService} from '../../services/caret.service';
-import {MultiCommandService} from '../../services/signals/multi-command.service';
+import {MultiCommandService} from '../../signals/multi-command.service';
 import { getTerminals } from 'src/app/helpers/getTerminals';
 import {isWindows, newLine} from '../../helpers/os-detector';
 import { AnsiDecoderService } from 'src/app/services/ansi-decoder.service';
-import {LoadingService} from '../../services/signals/loading.service';
+import {LoadingService} from '../../signals/loading.service';
 
 @Component({
   selector: 'ui-terminal',

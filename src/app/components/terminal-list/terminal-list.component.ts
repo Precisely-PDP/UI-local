@@ -4,7 +4,7 @@ import { NpmCommands } from 'src/app/enums/NpmCommands.enum';
 import { getRepoPath } from 'src/app/helpers/getRepoPath';
 import { getTerminals } from 'src/app/helpers/getTerminals';
 import {environment} from '../../../environments/environment';
-import {LoadingService} from '../../services/signals/loading.service';
+import {LoadingService} from '../../signals/loading.service';
 
 @Component({
   selector: 'ui-terminal-list',

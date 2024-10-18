@@ -1,5 +1,5 @@
 import {Injectable, signal} from '@angular/core';
-import {getTerminals} from '../../helpers/getTerminals';
+import {getTerminals} from '../helpers/getTerminals';
 
 @Injectable({
   providedIn: 'root'
