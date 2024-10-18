@@ -11,6 +11,8 @@ import {NgTerminalModule} from 'ng-terminal';
 import {TerminalsManagerComponent} from './components/TerminalsManager/terminals-manager.component';
 import {ConfigPageComponent} from './components/config-page/config-page.component';
 import {RouterLink, RouterOutlet} from '@angular/router';
+import {ProjectSelectionComponent} from './components/config-page/project-selection/project-selection.component';
+import {TerminalConfigComponent} from './components/config-page/terminal-config/terminal-config.component';
 
 const config: SocketIoConfig = {url: 'http://localhost:4444', options: {}};
 
@@ -20,7 +22,9 @@ const config: SocketIoConfig = {url: 'http://localhost:4444', options: {}};
     TerminalComponent,
     TerminalListComponent,
     TerminalsManagerComponent,
-    ConfigPageComponent
+    ConfigPageComponent,
+    ProjectSelectionComponent,
+    TerminalConfigComponent
   ],
   imports: [
     BrowserModule,
