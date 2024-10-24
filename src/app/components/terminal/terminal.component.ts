@@ -17,10 +17,11 @@ import {defTheme} from '../../shared/Themes';
 import {SpecialKey} from '../../enums/SpecialKey.enum';
 import {CaretService} from '../../services/caret.service';
 import {MultiCommandService} from '../../signals/multi-command.service';
-import { getTerminals } from 'src/app/helpers/getTerminals';
+import {getTerminals} from 'src/app/helpers/getTerminals';
 import {isWindows, newLine} from '../../helpers/os-detector';
-import { AnsiDecoderService } from 'src/app/services/ansi-decoder.service';
+import {AnsiDecoderService} from 'src/app/services/ansi-decoder.service';
 import {LoadingService} from '../../signals/loading.service';
+import {faExpand} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'ui-terminal',
@@ -82,35 +83,35 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
     this.initTerminal();
 
     //maybe better chat
-//     let outputBuffer = '';
-// const startMarker = `__CMD_START__${this.id()}__`;
-// const endMarker = `__CMD_END__${this.id()}__`;
-// let isCapturing = false;
+    //     let outputBuffer = '';
+    // const startMarker = `__CMD_START__${this.id()}__`;
+    // const endMarker = `__CMD_END__${this.id()}__`;
+    // let isCapturing = false;
 
-// this.subs.add(
-//   this.terminalService.$getResponse.subscribe(response => {
-//     if (response.id === this.id()) {
-//       let resp = this.ansiDecoderService.decodeAnsi(response.termData);
-//       outputBuffer += resp;
+    // this.subs.add(
+    //   this.terminalService.$getResponse.subscribe(response => {
+    //     if (response.id === this.id()) {
+    //       let resp = this.ansiDecoderService.decodeAnsi(response.termData);
+    //       outputBuffer += resp;
 
-//       if (outputBuffer.includes(startMarker)) {
-//         isCapturing = true;
-//         outputBuffer = outputBuffer.substring(outputBuffer.indexOf(startMarker) + startMarker.length);
-//       }
+    //       if (outputBuffer.includes(startMarker)) {
+    //         isCapturing = true;
+    //         outputBuffer = outputBuffer.substring(outputBuffer.indexOf(startMarker) + startMarker.length);
+    //       }
 
-//       if (isCapturing && outputBuffer.includes(endMarker)) {
-//         const commandOutput = outputBuffer.substring(0, outputBuffer.indexOf(endMarker));
+    //       if (isCapturing && outputBuffer.includes(endMarker)) {
+    //         const commandOutput = outputBuffer.substring(0, outputBuffer.indexOf(endMarker));
 
-//         // Write the output to the terminal
-//         this.write(commandOutput);
+    //         // Write the output to the terminal
+    //         this.write(commandOutput);
 
-//         // Reset the buffer for the next command
-//         outputBuffer = outputBuffer.substring(outputBuffer.indexOf(endMarker) + endMarker.length);
-//         isCapturing = false;
-//       }
-//     }
-//   })
-// );
+    //         // Reset the buffer for the next command
+    //         outputBuffer = outputBuffer.substring(outputBuffer.indexOf(endMarker) + endMarker.length);
+    //         isCapturing = false;
+    //       }
+    //     }
+    //   })
+    // );
 
     this.subs.add(
       this.terminalService.$getResponse.subscribe(response => {
@@ -160,7 +161,6 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
       cols: this.terminal.cols,
       rows: this.terminal.rows
     });
-
 
     // its working :)
     // this.initCommands.forEach(command => {
@@ -381,13 +381,17 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   specialCommands(): void {
-    switch(this.command.toLowerCase()) {
+    switch (this.command.toLowerCase()) {
       case 'clear':
-        console.log('terminalCLear')
+        console.log('terminalCLear');
         this.terminal.write('\x1B[2J\x1B[H');
         break;
       default:
         break;
     }
   }
+
+  protected readonly faExpand = faExpand;
+
+  handleExpand() {}
 }

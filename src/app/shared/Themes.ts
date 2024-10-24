@@ -15,5 +15,5 @@ export const defTheme: ITheme = {
   cyan: 'rgb(84,157, 157)',
   brightCyan: 'rgb(132,189,189)',
   white: 'rgb(217,217,217)',
-  brightWhite: 'rgb(255,255,255)',
+  brightWhite: 'rgb(255,255,255)'
 };

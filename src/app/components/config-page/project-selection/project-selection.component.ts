@@ -1,5 +1,10 @@
 import {Component, inject} from '@angular/core';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule
+} from '@angular/forms';
 import {NgForOf} from '@angular/common';
 import {getTerminals} from '../../../helpers/getTerminals';
 import {ChannelsName} from '../../../enums/channelsName.enum';
@@ -13,16 +18,30 @@ import {ActiveTerminalsService} from '../../../signals/activeTerminals.service';
 export class ProjectSelectionComponent {
   configForm: FormGroup;
   projectsPool = getTerminals().map(terminal => terminal.name);
-  coreOption = [ChannelsName.ORCHESTRATOR, ChannelsName.HEADER, ChannelsName.CORE];
+  coreOption = [
+    ChannelsName.ORCHESTRATOR,
+    ChannelsName.HEADER,
+    ChannelsName.CORE
+  ];
   chatOption = [...this.coreOption, ChannelsName.CHAT];
-  videoOption = [...this.coreOption, ChannelsName.VIDEO, ChannelsName.BLOCK_DESIGNER];
-  documentOption = [...this.coreOption, ChannelsName.DOCUMENT, ChannelsName.BLOCK_DESIGNER];
+  videoOption = [
+    ...this.coreOption,
+    ChannelsName.VIDEO,
+    ChannelsName.BLOCK_DESIGNER
+  ];
+  documentOption = [
+    ...this.coreOption,
+    ChannelsName.DOCUMENT,
+    ChannelsName.BLOCK_DESIGNER
+  ];
 
   //services
   activeTerminals = inject(ActiveTerminalsService);
 
   constructor(private fb: FormBuilder) {
-    const selectedProjects = this.activeTerminals.activeTerminals().map(terminal => terminal.name);
+    const selectedProjects = this.activeTerminals
+      .activeTerminals()
+      .map(terminal => terminal.name);
 
     // Initialize the form with selectedProjects and checkbox states
     this.configForm = this.fb.group({
@@ -40,7 +59,7 @@ export class ProjectSelectionComponent {
     this.updateCheckboxes();
 
     // Subscribe to value changes of checkboxes
-    this.configForm.get('addCore')?.valueChanges.subscribe((checked) => {
+    this.configForm.get('addCore')?.valueChanges.subscribe(checked => {
       if (checked) {
         this.addProjects(this.coreOption);
       } else {
@@ -48,7 +67,7 @@ export class ProjectSelectionComponent {
       }
     });
 
-    this.configForm.get('addChat')?.valueChanges.subscribe((checked) => {
+    this.configForm.get('addChat')?.valueChanges.subscribe(checked => {
       if (checked) {
         this.addProjects(this.chatOption);
       } else {
@@ -56,7 +75,7 @@ export class ProjectSelectionComponent {
       }
     });
 
-    this.configForm.get('addVideo')?.valueChanges.subscribe((checked) => {
+    this.configForm.get('addVideo')?.valueChanges.subscribe(checked => {
       if (checked) {
         this.addProjects(this.videoOption);
       } else {
@@ -64,7 +83,7 @@ export class ProjectSelectionComponent {
       }
     });
 
-    this.configForm.get('addDocument')?.valueChanges.subscribe((checked) => {
+    this.configForm.get('addDocument')?.valueChanges.subscribe(checked => {
       if (checked) {
         this.addProjects(this.documentOption);
       } else {
@@ -72,7 +91,7 @@ export class ProjectSelectionComponent {
       }
     });
 
-    this.configForm.get('addAll')?.valueChanges.subscribe((checked) => {
+    this.configForm.get('addAll')?.valueChanges.subscribe(checked => {
       if (checked) {
         this.addProjects(this.projectsPool);
       } else {
@@ -88,14 +107,16 @@ export class ProjectSelectionComponent {
 
   addProjects(projectsToAdd: string[]) {
     const selected = this.configForm.get('selectedProjects')?.value || [];
-    const newSelection = [...new Set([...selected, ...projectsToAdd])];  // Ensure no duplicates
+    const newSelection = [...new Set([...selected, ...projectsToAdd])]; // Ensure no duplicates
     this.configForm.get('selectedProjects')?.setValue(newSelection);
     this.activeTerminals.setTerminals(newSelection);
   }
 
   removeProjects(projectsToRemove: string[]) {
     const selected = this.configForm.get('selectedProjects')?.value || [];
-    const newSelection = selected.filter((project: string) => !projectsToRemove.includes(project));
+    const newSelection = selected.filter(
+      (project: string) => !projectsToRemove.includes(project)
+    );
     this.configForm.get('selectedProjects')?.setValue(newSelection);
     this.activeTerminals.setTerminals(newSelection);
   }
@@ -106,10 +127,20 @@ export class ProjectSelectionComponent {
     const containsAll = (arr: string[]) => arr.every(v => selected.includes(v));
 
     // Update checkboxes without emitting events to avoid infinite loops
-    this.configForm.get('addCore')?.setValue(containsAll(this.coreOption), { emitEvent: false });
-    this.configForm.get('addChat')?.setValue(containsAll(this.chatOption), { emitEvent: false });
-    this.configForm.get('addVideo')?.setValue(containsAll(this.videoOption), { emitEvent: false });
-    this.configForm.get('addDocument')?.setValue(containsAll(this.documentOption), { emitEvent: false });
-    this.configForm.get('addAll')?.setValue(containsAll(this.projectsPool), { emitEvent: false });
+    this.configForm
+      .get('addCore')
+      ?.setValue(containsAll(this.coreOption), {emitEvent: false});
+    this.configForm
+      .get('addChat')
+      ?.setValue(containsAll(this.chatOption), {emitEvent: false});
+    this.configForm
+      .get('addVideo')
+      ?.setValue(containsAll(this.videoOption), {emitEvent: false});
+    this.configForm
+      .get('addDocument')
+      ?.setValue(containsAll(this.documentOption), {emitEvent: false});
+    this.configForm
+      .get('addAll')
+      ?.setValue(containsAll(this.projectsPool), {emitEvent: false});
   }
 }

@@ -11,7 +11,9 @@ export class ActiveTerminalsService {
   constructor() {}
 
   setTerminals(terminals: string[]) {
-    const initTerminals = getTerminals().filter(terminal => terminals.includes(terminal.name));
+    const initTerminals = getTerminals().filter(terminal =>
+      terminals.includes(terminal.name)
+    );
     this.activeTerminals.set(initTerminals);
   }
 }

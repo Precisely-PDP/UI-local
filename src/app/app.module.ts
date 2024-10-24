@@ -13,6 +13,7 @@ import {ConfigPageComponent} from './components/config-page/config-page.componen
 import {RouterLink, RouterOutlet} from '@angular/router';
 import {ProjectSelectionComponent} from './components/config-page/project-selection/project-selection.component';
 import {TerminalConfigComponent} from './components/config-page/terminal-config/terminal-config.component';
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 
 const config: SocketIoConfig = {url: 'http://localhost:4444', options: {}};
 
@@ -34,7 +35,8 @@ const config: SocketIoConfig = {url: 'http://localhost:4444', options: {}};
     NgTerminalModule,
     RouterOutlet,
     RouterLink,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent],

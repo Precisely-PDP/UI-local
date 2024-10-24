@@ -11,6 +11,6 @@ export const defaultOptions: ITerminalOptions | ITerminalInitOnlyOptions = {
   screenReaderMode: true,
   disableStdin: false,
   windowsPty: {
-    backend: 'winpty',
-  },
+    backend: 'winpty'
+  }
 };

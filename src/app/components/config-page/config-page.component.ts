@@ -1,9 +1,8 @@
-import { Component, inject } from '@angular/core';
+import {Component, inject} from '@angular/core';
 
 @Component({
   selector: 'ui-config-page',
   templateUrl: './config-page.component.html',
   styleUrl: './config-page.component.scss'
 })
-export class ConfigPageComponent {
-}
+export class ConfigPageComponent {}

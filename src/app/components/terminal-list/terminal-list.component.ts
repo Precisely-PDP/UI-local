@@ -1,8 +1,8 @@
 import {Component, effect, inject, OnInit} from '@angular/core';
 import {ITerminalInit} from '../../Interfaces/ITerminalInit';
-import { NpmCommands } from 'src/app/enums/NpmCommands.enum';
-import { getRepoPath } from 'src/app/helpers/getRepoPath';
-import { getTerminals } from 'src/app/helpers/getTerminals';
+import {NpmCommands} from 'src/app/enums/NpmCommands.enum';
+import {getRepoPath} from 'src/app/helpers/getRepoPath';
+import {getTerminals} from 'src/app/helpers/getTerminals';
 import {environment} from '../../../environments/environment';
 import {LoadingService} from '../../signals/loading.service';
 import {ActiveTerminalsService} from '../../signals/activeTerminals.service';
@@ -30,7 +30,10 @@ export class TerminalListComponent implements OnInit {
     });
 
     effect(() => {
-      this.colorIndex = Math.floor((this.loadingService.terminalNumber() / this.terminals.length) * (this.colors.length - 1));
+      this.colorIndex = Math.floor(
+        (this.loadingService.terminalNumber() / this.terminals.length) *
+          (this.colors.length - 1)
+      );
     });
   }
 

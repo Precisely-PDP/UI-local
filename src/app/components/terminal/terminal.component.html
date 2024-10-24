@@ -2,9 +2,19 @@
   id="{{ id() }}"
   class="group"
   [class.opacity-0]="!this.loadingService.isLoaded()">
-  <div class="rounded-t-2xl bg-green-500 group-focus-within:bg-indigo-500">
-    <p
-      class="text-center text-amber-50"
-      [textContent]="name()"></p>
+  <div class="flex rounded-t-2xl bg-green-500 group-focus-within:bg-indigo-500">
+    <div class="w-11/12">
+      <p
+        class="text-center text-amber-50"
+        [textContent]="name()"></p>
+    </div>
+    <div class="w-1/12">
+      <button
+        class="flex h-full w-full items-center justify-center bg-transparent text-amber-50 hover:rounded-tr-2xl hover:bg-green-600 focus:outline-none group-focus-within:hover:bg-indigo-600"
+        (click)="handleExpand()"
+        aria-label="Expand">
+        <fa-icon [icon]="faExpand"></fa-icon>
+      </button>
+    </div>
   </div>
 </div>

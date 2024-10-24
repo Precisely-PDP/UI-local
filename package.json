@@ -29,6 +29,8 @@
     "@angular/platform-browser": "17.3.4",
     "@angular/platform-browser-dynamic": "17.3.4",
     "@angular/router": "17.3.4",
+    "@fortawesome/angular-fontawesome": "^0.14.1",
+    "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@popperjs/core": "^2.11.8",
     "@xterm/addon-fit": "0.10.0",
     "@xterm/xterm": "5.5.0",

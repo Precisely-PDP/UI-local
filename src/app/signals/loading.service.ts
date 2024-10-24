@@ -9,15 +9,17 @@ export class LoadingService {
   //services
   activeTerminals = inject(ActiveTerminalsService);
 
-
-  private readonly terminalCount = computed(() => this.activeTerminals.activeTerminals().length);
+  private readonly terminalCount = computed(
+    () => this.activeTerminals.activeTerminals().length
+  );
   terminalNumber = signal<number>(0);
 
   constructor() {
-    effect(() => {
-      const dummyValue = this.terminalCount();
-      this.terminalNumber.set(0);
-    },
+    effect(
+      () => {
+        const dummyValue = this.terminalCount();
+        this.terminalNumber.set(0);
+      },
       {
         allowSignalWrites: true
       }
