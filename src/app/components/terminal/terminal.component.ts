@@ -387,7 +387,7 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
   specialCommands(): void {
     switch (this.command.toLowerCase()) {
       case 'clear':
-        console.log('terminalCLear');
+        console.log('terminalClear');
         this.terminal.write('\x1B[2J\x1B[H');
         break;
       default:
