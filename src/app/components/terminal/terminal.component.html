@@ -1,6 +1,10 @@
+
+<div [ngClass]="this.fullscreen ? 'fixed z-50 px-24 py-6 w-full h-[90vh] inset-0 m-auto' : 'relative w-full h-[400px]'"
+     class="transition-all duration-300 ease-in-out"
+>
 <div
   id="{{ id() }}"
-  class="group"
+  class="group w-full h-full flex flex-col"
   [class.opacity-0]="!this.loadingService.isLoaded()">
   <div class="flex rounded-t-2xl bg-green-500 group-focus-within:bg-indigo-500">
     <div class="w-11/12">
@@ -13,8 +17,12 @@
         class="flex h-full w-full items-center justify-center bg-transparent text-amber-50 hover:rounded-tr-2xl hover:bg-green-600 focus:outline-none group-focus-within:hover:bg-indigo-600"
         (click)="handleExpand()"
         aria-label="Expand">
-        <fa-icon [icon]="faExpand"></fa-icon>
+        <fa-icon [icon]="fullscreen ? faCompress : faExpand"></fa-icon>
       </button>
     </div>
   </div>
 </div>
+</div>
+
+
+<!--  fixed w-full h-full z-50 bg-black bg-opacity-80 flex items-center justify-center-->

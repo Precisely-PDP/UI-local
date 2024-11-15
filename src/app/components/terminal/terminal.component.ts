@@ -21,7 +21,7 @@ import {getTerminals} from 'src/app/helpers/getTerminals';
 import {isWindows, newLine} from '../../helpers/os-detector';
 import {AnsiDecoderService} from 'src/app/services/ansi-decoder.service';
 import {LoadingService} from '../../signals/loading.service';
-import {faExpand} from '@fortawesome/free-solid-svg-icons';
+import {faExpand, faCompress} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'ui-terminal',
@@ -44,6 +44,10 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
   initCommands = input.required<string[]>();
 
   usedCommands: string[] = [];
+
+  fitAddon: FitAddon;
+
+  fullscreen = false;
 
   usedCommandsId: number = 0;
 
@@ -147,11 +151,11 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
   initTerminal() {
     this.terminal = new Terminal(defaultOptions);
     this.terminal.options.theme = defTheme;
-    const fitAddon = new FitAddon();
-    this.terminal.loadAddon(fitAddon);
+    this.fitAddon = new FitAddon();
+    this.terminal.loadAddon(this.fitAddon);
     this.terminalElement = document.getElementById(this.id());
     this.terminal.open(this.terminalElement);
-    fitAddon.fit();
+    this.fitAddon.fit();
 
     this.IOTerminal();
 
@@ -393,5 +397,12 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
 
   protected readonly faExpand = faExpand;
 
-  handleExpand() {}
+  handleExpand() {
+    this.fullscreen = !this.fullscreen;
+    setTimeout(() => {
+      this.fitAddon.fit();
+    }, 300);
+  }
+
+  protected readonly faCompress = faCompress;
 }
