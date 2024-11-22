@@ -17,7 +17,8 @@ const { v4: uuidv4 } = require('uuid');
 const terminals = new Map();
 
 const prohibitedCommands = [
-  'clear'
+  'clear',
+  'cls'
 ];
 
 const prefixes = Object.freeze({
