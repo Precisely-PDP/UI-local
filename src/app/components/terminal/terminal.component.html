@@ -5,7 +5,7 @@
     id="{{ id() }}"
     class="group flex h-full w-full flex-col  transition-all duration-1000 ease-in-out"
       [class.opacity-0]="!this.loadingService.isLoaded()">
-    <div class="flex rounded-t-2xl bg-green-500 group-focus-within:bg-indigo-500">
+    <div class="flex rounded-t-2xl " [ngClass]="terminalStatus">
       <div class="w-11/12">
         <p
           class="text-center text-amber-50"
@@ -13,7 +13,8 @@
       </div>
       <div class="w-1/12">
         <button
-          class="flex h-full w-full items-center justify-center bg-transparent text-amber-50 hover:rounded-tr-2xl hover:bg-green-600 focus:outline-none group-focus-within:hover:bg-indigo-600"
+          class="flex h-full w-full items-center justify-center bg-transparent text-amber-50 hover:rounded-tr-2xl focus:outline-none"
+          [ngClass]="terminalStatusHover"
           (click)="handleExpand()"
           aria-label="Expand">
           <fa-icon [icon]="fullscreen ? faCompress : faExpand"></fa-icon>

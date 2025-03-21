@@ -57,6 +57,8 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
   autocompletion = '';
   autocomplete = false;
   isLoaded = false;
+  terminalStatus = '';
+  terminalStatusHover = '';
 
   //services
   terminalService = inject(TerminalService);
@@ -122,6 +124,17 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
         if (response.id === this.id()) {
           const resp = response.termData;// this.ansiDecoderService.decodeAnsi(response.termData);
           this.write(resp);
+          if (resp.toLowerCase().includes('successfully')) {
+            this.terminalStatus = 'bg-green-500 group-focus-within:bg-green-600'
+            this.terminalStatusHover = 'hover:bg-green-700 group-focus-within:hover:bg-green-700';
+          } else if (resp.toLowerCase().includes('failed')) {
+            this.terminalStatus = 'bg-red-500 group-focus-within:bg-red-600'
+            this.terminalStatusHover = 'hover:bg-red-700 group-focus-within:hover:bg-red-700';
+          } else {
+            this.terminalStatus = 'bg-gray-500 group-focus-within:bg-gray-600'
+            this.terminalStatusHover = 'hover:bg-gray-700 group-focus-within:hover:bg-gray-700';
+          }
+
 
           if (this.autocomplete) {
             this.autocompletion += resp;
