@@ -1,6 +1,6 @@
 import {Component, effect, inject, OnInit} from '@angular/core';
 import {ITerminalInit} from '../../Interfaces/ITerminalInit';
-import {NpmCommands} from 'src/app/enums/NpmCommands.enum';
+import {NpmCommands} from 'src/app/enums/npmCommands.enum';
 import {getRepoPath} from 'src/app/helpers/getRepoPath';
 import {getTerminals} from 'src/app/helpers/getTerminals';
 import {environment} from '../../../environments/environment';

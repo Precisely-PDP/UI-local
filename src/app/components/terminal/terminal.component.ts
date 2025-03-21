@@ -14,7 +14,7 @@ import {Subscription} from 'rxjs';
 import {FitAddon} from '@xterm/addon-fit';
 import {defaultOptions} from '../../shared/TerminalOptions';
 import {defTheme} from '../../shared/Themes';
-import {SpecialKey} from '../../enums/SpecialKey.enum';
+import {SpecialKey} from '../../enums/specialKey.enum';
 import {CaretService} from '../../services/caret.service';
 import {MultiCommandService} from '../../signals/multi-command.service';
 import {getTerminals} from 'src/app/helpers/getTerminals';
@@ -120,7 +120,7 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subs.add(
       this.terminalService.$getResponse.subscribe(response => {
         if (response.id === this.id()) {
-          const resp = this.ansiDecoderService.decodeAnsi(response.termData);
+          const resp = response.termData;// this.ansiDecoderService.decodeAnsi(response.termData);
           this.write(resp);
 
           if (this.autocomplete) {
@@ -167,14 +167,14 @@ export class TerminalComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     // its working :)
-    // this.initCommands.forEach(command => {
-    //   this.terminalService.sendCommand({
-    //     id: this.id,
-    //     command: command,
-    //     cols: this.terminal.cols,
-    //     rows: this.terminal.rows
-    //   });
-    // });
+    this.initCommands().forEach(command => {
+      this.terminalService.sendCommand({
+        id: this.id(),
+        command: command,
+        cols: this.terminal.cols,
+        rows: this.terminal.rows
+      });
+    });
   }
 
   IOTerminal() {

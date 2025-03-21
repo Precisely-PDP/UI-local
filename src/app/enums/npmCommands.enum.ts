@@ -1,4 +1,4 @@
 export enum NpmCommands {
   START = 'npm run start',
-  SERVE = 'npm run serve'
+  SERVE = `npm run local`
 }

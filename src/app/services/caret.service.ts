@@ -1,4 +1,4 @@
-import {CaretSequences} from '../enums/CaretSequences.enum';
+import {CaretSequences} from '../enums/caretSequences.enum';
 import {Injectable} from '@angular/core';
 
 @Injectable({

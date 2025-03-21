@@ -1,9 +1,10 @@
-import {NpmCommands} from '../enums/NpmCommands.enum';
+import {NpmCommands} from '../enums/npmCommands.enum';
 import {ITerminalInit} from '../Interfaces/ITerminalInit';
 import {getRepoPath} from './getRepoPath';
 import {ChannelsName} from '../enums/channelsName.enum';
 
 export const getTerminals = (): ITerminalInit[] => {
+  const stage = localStorage.getItem('stage');
   return [
     {
       id: '0',
@@ -15,37 +16,37 @@ export const getTerminals = (): ITerminalInit[] => {
       id: '1',
       cwd: getRepoPath('core', 'communicate-ui-header'),
       name: ChannelsName.HEADER,
-      commands: [NpmCommands.SERVE]
+      commands: [`${NpmCommands.SERVE}-${stage}`]
     },
     {
       id: '2',
       cwd: getRepoPath('core', 'communicate-ui-core'),
       name: ChannelsName.CORE,
-      commands: [NpmCommands.SERVE]
+      commands: [`${NpmCommands.SERVE}-${stage}`]
     },
     {
       id: '3',
       cwd: getRepoPath('video', 'video-channel-ui'),
       name: ChannelsName.VIDEO,
-      commands: [NpmCommands.SERVE]
+      commands: [`${NpmCommands.SERVE}-${stage}`]
     },
     {
       id: '4',
       cwd: getRepoPath('chat', 'converse-ui'),
       name: ChannelsName.CHAT,
-      commands: [NpmCommands.SERVE]
+      commands: [`${NpmCommands.SERVE}-${stage}`]
     },
     {
       id: '5',
       cwd: getRepoPath('block-designer', 'communicate-block-designer'),
       name: ChannelsName.BLOCK_DESIGNER,
-      commands: [NpmCommands.SERVE]
+      commands: [`${NpmCommands.SERVE}-${stage}`]
     },
     {
       id: '6',
       cwd: getRepoPath('document-designer', 'communicate-document-designer'),
       name: ChannelsName.DOCUMENT,
-      commands: [NpmCommands.SERVE]
+      commands: [`${NpmCommands.SERVE}-${stage}`]
     }
   ];
 };
