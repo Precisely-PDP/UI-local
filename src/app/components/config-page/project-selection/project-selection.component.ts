@@ -50,7 +50,10 @@ export class ProjectSelectionComponent {
       addChat: [false],
       addVideo: [false],
       addDocument: [false],
-      addAll: [false]
+      addAll: [false],
+      addRenderer: [false],
+      addShared: [false],
+      addCommon: [false]
     });
   }
 
@@ -93,9 +96,33 @@ export class ProjectSelectionComponent {
 
     this.configForm.get('addAll')?.valueChanges.subscribe(checked => {
       if (checked) {
-        this.addProjects(this.projectsPool);
+        this.addProjects(this.projectsPool.filter(name => ![`${ChannelsName.RENDERER}`, `${ChannelsName.SHARED_LIBRARY}`, `${ChannelsName.COMMON}`].includes(name)));
       } else {
-        this.removeProjects(this.projectsPool);
+        this.removeProjects(this.projectsPool.filter(name => ![`${ChannelsName.RENDERER}`, `${ChannelsName.SHARED_LIBRARY}`, `${ChannelsName.COMMON}`].includes(name)));
+      }
+    });
+
+    this.configForm.get('addRenderer')?.valueChanges.subscribe(checked => {
+      if (checked) {
+        this.addProjects([ChannelsName.RENDERER]);
+      } else {
+        this.removeProjects([ChannelsName.RENDERER]);
+      }
+    });
+
+    this.configForm.get('addShared')?.valueChanges.subscribe(checked => {
+      if (checked) {
+        this.addProjects([ChannelsName.SHARED_LIBRARY]);
+      } else {
+        this.removeProjects([ChannelsName.SHARED_LIBRARY]);
+      }
+    });
+
+    this.configForm.get('addCommon')?.valueChanges.subscribe(checked => {
+      if (checked) {
+        this.addProjects([ChannelsName.COMMON]);
+      } else {
+        this.removeProjects([ChannelsName.COMMON]);
       }
     });
 
@@ -141,6 +168,6 @@ export class ProjectSelectionComponent {
       ?.setValue(containsAll(this.documentOption), {emitEvent: false});
     this.configForm
       .get('addAll')
-      ?.setValue(containsAll(this.projectsPool), {emitEvent: false});
+      ?.setValue(containsAll(this.projectsPool.filter(name => ![`${ChannelsName.RENDERER}`, `${ChannelsName.SHARED_LIBRARY}`, `${ChannelsName.COMMON}`].includes(name))), {emitEvent: false});
   }
 }

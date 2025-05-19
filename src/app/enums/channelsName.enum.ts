@@ -5,5 +5,8 @@ export enum ChannelsName {
   VIDEO = 'Video',
   CHAT = 'Chat',
   BLOCK_DESIGNER = 'Block Designer',
-  DOCUMENT = 'Document'
+  DOCUMENT = 'Document',
+  RENDERER = 'Renderer',
+  SHARED_LIBRARY = 'Shared-library',
+  COMMON = 'Block Designer Common'
 }
